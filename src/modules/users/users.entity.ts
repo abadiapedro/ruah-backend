@@ -18,6 +18,17 @@ export class User {
   @Column({ default: true })
   active: boolean;
 
+  @Column({ nullable: true })
+  avatarUrl?: string;
+
+  @Column({
+    name: 'password_changed',
+    type: 'tinyint',
+    width: 1,
+    default: 0,
+  })
+  passwordChanged: number;
+
   @ManyToOne(() => Role)
   role: Role;
 }

@@ -10,14 +10,24 @@ export class RolesService {
   constructor(
     @InjectRepository(Role)
     private readonly repository: Repository<Role>,
-  ) {}
+  ) { }
 
   create(dto: CreateRoleDto) {
     return this.repository.save(dto);
   }
 
-  findAll() {
-    return this.repository.find();
+  async findAll(active?: boolean) {
+    const where = active !== undefined ? { active } : {};
+
+    const [items, total] = await this.repository.findAndCount({
+      where,
+      order: { name: 'ASC' },
+    });
+
+    return {
+      items,
+      total,
+    };
   }
 
   findOne(id: number) {

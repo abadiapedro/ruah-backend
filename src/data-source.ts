@@ -1,5 +1,8 @@
 import 'dotenv/config';
+import 'reflect-metadata';
 import { DataSource } from 'typeorm';
+
+const isProd = process.env.NODE_ENV === 'production';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -8,7 +11,14 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: ['dist/**/*.entity.js'],
-  migrations: ['dist/migrations/*.js'],
+
   synchronize: false,
+
+  entities: isProd
+    ? ['dist/**/*.entity.js']
+    : ['src/**/*.entity.ts'],
+
+  migrations: isProd
+    ? ['dist/migrations/*.js']
+    : ['src/migrations/*.ts'],
 });

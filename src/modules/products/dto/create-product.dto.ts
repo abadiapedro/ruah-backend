@@ -6,10 +6,11 @@ import {
   IsOptional,
   IsString,
   ValidateNested,
+  ArrayMinSize,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-class ProductImageDto {
+export class ProductImageDto {
   @IsString()
   url: string;
 
@@ -46,6 +47,7 @@ export class CreateProductDto {
   isBestSeller?: boolean;
 
   @IsArray()
+  @ArrayMinSize(1, { message: 'Product must have at least one image' })
   @ValidateNested({ each: true })
   @Type(() => ProductImageDto)
   images: ProductImageDto[];

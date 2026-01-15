@@ -5,7 +5,6 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  MinLength,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -17,8 +16,8 @@ export class CreateUserDto {
   email: string;
 
   @IsString()
-  @MinLength(6)
-  password: string;
+  @IsOptional()
+  password?: string;
 
   @IsNumber()
   roleId: number;
@@ -26,4 +25,8 @@ export class CreateUserDto {
   @IsBoolean()
   @IsOptional()
   active?: boolean;
+
+  @IsString()
+  @IsOptional()
+  avatarUrl?: string;
 }

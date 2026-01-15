@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -20,7 +21,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 @UseGuards(JwtAuthGuard)
 @Controller('roles')
 export class RolesController {
-  constructor(private readonly service: RolesService) {}
+  constructor(private readonly service: RolesService) { }
 
   @Post()
   create(@Body() dto: CreateRoleDto) {
@@ -28,8 +29,10 @@ export class RolesController {
   }
 
   @Get()
-  findAll() {
-    return this.service.findAll();
+  findAll(@Query('active') active?: string) {
+    return this.service.findAll(
+      active !== undefined ? active === 'true' : undefined,
+    );
   }
 
   @Get(':id')
